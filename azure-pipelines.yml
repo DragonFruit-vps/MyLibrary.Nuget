@@ -4,6 +4,8 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  version: 1.0.2-$(Build.BuildId)
 
 stages:
 - stage: Build_Stage
@@ -14,6 +16,13 @@ stages:
     variables:
       BuildConfiguration: release
     steps:
+
+    - task: DotNetCoreCLI@2
+      displayName: Restore Packages
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
 
     - task: DotNetCoreCLI@2
       displayName: Build Apps
